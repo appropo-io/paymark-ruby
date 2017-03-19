@@ -4,7 +4,8 @@ module Paymark
     attr_accessor :url, :headers
 
     def initialize(options = {})
-      @url = "https://#{ options.delete(:test).present? ? :demo : :secure }.paymarkclick.co.nz/api/webpayments/paymentservice/rest"
+      site = options.delete(:test)
+      @url = "https://#{ site.present? ? site : :secure }.paymarkclick.co.nz/api/webpayments/paymentservice/rest"
       @headers = options.delete(:headers) || {}
       @options = options
     end
@@ -40,8 +41,8 @@ module Paymark
         amount: amount_in_dollars,
         reference: transaction_id,
         particular: particular[0..40],
-        return_url: options[:return_url]#,
-        # store_card_without_input: save_card ? 1 : 0
+        return_url: options[:return_url],
+        store_card_without_input: options[:save_card] == true ? 1 : 0
       }
 
       response = client.post("WPRequest", query_params)
