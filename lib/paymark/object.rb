@@ -17,7 +17,7 @@ module Paymark
     end
 
     def key_map(key)
-      key.to_s.snake_case
+      snake_case key.to_s
     end
 
     def value_map(key, value)
@@ -27,6 +27,14 @@ module Paymark
     def method_missing(name, *args)
       puts "Missing Property #{name} #{args}"
       fail unless Rails.env.production?
+    end
+
+    def snake_case(string)
+      string.gsub(/::/, '/')
+        .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+        .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+        .tr('-', '_')
+        .downcase
     end
 
   end
