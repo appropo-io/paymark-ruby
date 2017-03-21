@@ -42,6 +42,7 @@ module Paymark
         reference: transaction_id,
         particular: particular[0..40],
         return_url: options[:return_url],
+        notification_url: options[:notification_url],
         store_card_without_input: options[:save_card] == true ? 1 : 0
       }
 
