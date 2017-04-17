@@ -118,7 +118,7 @@ module Paymark
 
       response = client.post("transaction/purchase/#{card_token}", query_params)
       if response.status == 200
-        response
+        CreditCardTransaction.new(response.body)
       else
         # {"code":5000,"message":"Payment Account ID is invalid"}
         raise response.body.dig('message')
