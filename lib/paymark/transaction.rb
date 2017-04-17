@@ -44,7 +44,7 @@ module Paymark
 # 11:21:00 web.1       |    "Particular"=>"Longboard Burrito and Lil' Burrito",
     attr_accessor :particular
 # 11:21:00 web.1       |    "ReceiptNumber"=>"26187798",
-    attr_accessor :receipt_number
+    attr_accessor :receipt_number, :receipt_id
 # 11:21:00 web.1       |    "Reference"=>"49429",
     attr_accessor :reference
 # 11:21:00 web.1       |    "Status"=>"SUCCESSFUL",
@@ -55,8 +55,16 @@ module Paymark
     attr_accessor :transaction_id
 # 11:21:00 web.1       |    "Type"=>"PURCHASE"
     attr_accessor :type
-    
+
     attr_accessor :original_transaction_id
+
+    attr_accessor :token_reference
+
+    attr_accessor :merchant_token
+    attr_accessor :payer_id
+    attr_accessor :payer_id_type
+    attr_accessor :bank
+
   end
 
   class Transaction < Object
