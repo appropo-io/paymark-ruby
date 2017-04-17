@@ -26,7 +26,7 @@ module Paymark
 
     def method_missing(name, *args)
       puts "Missing Property #{name} #{args}"
-      fail unless Rails.env.production?
+      # fail unless Rails.env.production?
     end
 
     def snake_case(string)

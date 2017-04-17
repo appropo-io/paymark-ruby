@@ -55,6 +55,8 @@ module Paymark
     attr_accessor :transaction_id
 # 11:21:00 web.1       |    "Type"=>"PURCHASE"
     attr_accessor :type
+    
+    attr_accessor :original_transaction_id
   end
 
   class Transaction < Object
