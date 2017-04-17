@@ -5,7 +5,7 @@ module Paymark
 
     def initialize(options = {})
       site = options.delete(:test)
-      @url = "https://#{ site.present? ? site : :secure }.paymarkclick.co.nz/api/webpayments/paymentservice/rest"
+      @url = "https://#{ site.present? ? site : :secure }.paymarkclick.co.nz/api"
       @headers = options.delete(:headers) || {}
       @options = options
     end
@@ -46,7 +46,7 @@ module Paymark
         store_card_without_input: options[:save_card] == true ? 1 : 0
       }
 
-      response = client.post("WPRequest", query_params)
+      response = client.post("webpayments/paymentservice/rest/WPRequest", query_params)
 
       if response.status == 200
         response.body['string']
@@ -64,7 +64,7 @@ module Paymark
         account_id: @options[:account_id],
         result_id: result_id,
       }
-      response = client.get("QueryDirectPostResultByResultId", query_params)
+      response = client.get("webpayments/paymentservice/rest/QueryDirectPostResultByResultId", query_params)
 
       if response.status == 200
         TransactionResult.new(response.body['DirectPostResult'])
@@ -82,22 +82,42 @@ module Paymark
       }
 
       key, value = key_value_pair.first
-      response =  case key
+      response = case key
       when :reference
         query_params[:reference] = value
-        client.get("QueryTransactionByReference", query_params)
+        client.get("webpayments/paymentservice/rest/QueryTransactionByReference", query_params)
       when :txn_id
         query_params[:txn_id] = value
-        client.get("QueryTransactionByTxnId", query_params)
+        client.get("webpayments/paymentservice/rest/QueryTransactionByTxnId", query_params)
       when :particular
         query_params[:particular] = value[0..40]
-        client.get("QueryTransactionByParticular", query_params)
+        client.get("webpayments/paymentservice/rest/QueryTransactionByParticular", query_params)
       else
         raise Exception.new("Unsupported get by: #{key}")
       end
 
       if response.status == 200
         CreditCardTransaction.new(response.body['CreditCardTransaction'])
+      else
+        raise Exception.new(response.body.dig('CreditCardTransaction','error_message'))
+      end
+    end
+
+    def purchase(card_token, amount_in_dollars, transaction_id, particular, args = {})
+      options = @options.merge(args)
+
+      query_params = {
+        username: options[:username],
+        password: options[:password],
+        account_id: options[:account_id],
+        amount: amount_in_dollars,
+        reference: transaction_id,
+        particular: particular[0..40]
+      }
+
+      response = client.post("transaction/purchase/#{card_token}", query_params)
+      if response.status == 200
+        response
       else
         raise Exception.new(response.body.dig('CreditCardTransaction','error_message'))
       end
