@@ -26,6 +26,7 @@ module Paymark
         faraday.adapter Faraday.default_adapter  # make requests with Net::HTTP
       end
       @conn.headers = @headers
+      @conn.basic_auth @options[:username], @options[:password]
       @conn
     end
 
