@@ -110,7 +110,7 @@ module Paymark
       query_params = {
         # username: options[:username],
         # password: options[:password],
-        account_id: options[:account_id],
+        accountId: options[:account_id],
         amount: amount_in_dollars,
         reference: transaction_id,
         particular: particular[0..40]
