@@ -108,8 +108,8 @@ module Paymark
       options = @options.merge(args)
 
       query_params = {
-        username: options[:username],
-        password: options[:password],
+        # username: options[:username],
+        # password: options[:password],
         account_id: options[:account_id],
         amount: amount_in_dollars,
         reference: transaction_id,
@@ -120,7 +120,8 @@ module Paymark
       if response.status == 200
         response
       else
-        raise Exception.new(response.body.dig('CreditCardTransaction','error_message'))
+        # {"code":5000,"message":"Payment Account ID is invalid"}
+        raise Exception.new(response.body.dig('message'))
       end
     end
 
