@@ -120,8 +120,10 @@ module Paymark
       if response.status == 200
         CreditCardTransaction.new(response.body)
       else
+        body = response.body
+        raise body.dig('message') if body.is_a? Hash
+        raise "#{response.status} Server Error"
         # {"code":5000,"message":"Payment Account ID is invalid"}
-        raise response.body.dig('message')
       end
     end
 
