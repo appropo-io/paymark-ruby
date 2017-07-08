@@ -53,8 +53,8 @@ module Paymark
         response.body['string']
       else
         body = response.body
-        raise body.dig('error','errormessage') if body.is_a? Hash
-        raise "#{response.status} Server Error"
+        raise Paymark::Error, body.dig('error','errormessage') if body.is_a? Hash
+        raise Paymark::Error, "#{response.status} Server Error"
       end
     end
 
@@ -72,7 +72,7 @@ module Paymark
       if response.status == 200
         TransactionResult.new(response.body['DirectPostResult'])
       else
-        raise Exception.new(response.body.dig('error','errormessage'))
+        raise Paymark::Error, Exception.new(response.body.dig('error','errormessage'))
       end
     end
 
@@ -96,13 +96,13 @@ module Paymark
         query_params[:particular] = value[0..40]
         client.get("webpayments/paymentservice/rest/QueryTransactionByParticular", query_params)
       else
-        raise Exception.new("Unsupported get by: #{key}")
+        raise Paymark::Error, "Unsupported get by: #{key}"
       end
 
       if response.status == 200
         CreditCardTransaction.new(response.body['CreditCardTransaction'])
       else
-        raise response.body.dig('CreditCardTransaction','error_message')
+        raise Paymark::Error, response.body.dig('CreditCardTransaction','error_message')
       end
     end
 
@@ -123,8 +123,8 @@ module Paymark
         CreditCardTransaction.new(response.body)
       else
         body = response.body
-        raise body.dig('message') if body.is_a? Hash
-        raise "#{response.status} Server Error"
+        raise Paymark::Error, body.dig('message') if body.is_a? Hash
+        raise Paymark::Error, "#{response.status} Server Error"
         # {"code":5000,"message":"Payment Account ID is invalid"}
       end
     end
