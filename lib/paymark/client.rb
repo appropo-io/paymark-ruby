@@ -52,6 +52,7 @@ module Paymark
       if response.status == 200
         response.body['string']
       else
+        body = response.body
         raise body.dig('error','errormessage') if body.is_a? Hash
         raise "#{response.status} Server Error"
       end
