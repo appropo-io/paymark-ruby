@@ -21,6 +21,8 @@ module Paymark
     attr_accessor :acquirer_response_code
 # 11:21:00 web.1       |    "Amount"=>"18.90",
     attr_accessor :amount
+
+    attr_accessor :surcharge
 # 11:21:00 web.1       |    "AuthCode"=>"332212",
     attr_accessor :auth_code
 # 11:21:00 web.1       |    "BatchNumber"=>"20161007",
