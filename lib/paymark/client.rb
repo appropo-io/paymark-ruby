@@ -71,8 +71,10 @@ module Paymark
 
       if response.status == 200
         TransactionResult.new(response.body['DirectPostResult'])
-      else
+      elsif response.body.is_a? Hash
         raise Paymark::Error, Exception.new(response.body.dig('error','errormessage'))
+      else
+        raise Paymark::Error response.body || "HTTP #{response.status}"
       end
     end
 
@@ -101,8 +103,10 @@ module Paymark
 
       if response.status == 200
         CreditCardTransaction.new(response.body['CreditCardTransaction'])
-      else
+      elsif response.body.is_a? Hash
         raise Paymark::Error, response.body.dig('CreditCardTransaction','error_message')
+      else
+        raise Paymark::Error response.body || "HTTP #{response.status}"
       end
     end
 
