@@ -24,11 +24,12 @@ module Paymark
         # faraday.params_encoder = Faraday::FlatParamsEncoder
         # faraday.use :instrumentation
         faraday.adapter Faraday.default_adapter  # make requests with Net::HTTP
+
+        faraday.headers = @headers
+        #faraday.basic_auth @options[:username], @options[:password] # faraday < 1
+        faraday.request :basic_auth, @options[:username], @options[:password] # faraday 1.x
+        #faraday.request :authorization, :basic, @options[:username], @options[:password] # faraday 2.x
       end
-      @conn.headers = @headers
-      #@conn.basic_auth @options[:username], @options[:password] # faraday < 1
-      @conn.request :basic_auth, @options[:username], @options[:password] # faraday 1.x
-      #@conn.request :authorization, :basic, @options[:username], @options[:password] # faraday 2.x
       @conn
     end
 
