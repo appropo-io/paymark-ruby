@@ -12,7 +12,7 @@ module Paymark
 
     def client
       @conn ||= Faraday.new(:url => @url) do |faraday|
-        # faraday.response :logger, ::Logger.new(STDOUT), bodies: true
+        faraday.response :logger, ::Logger.new(STDOUT), bodies: (ENV["HTTP_LOG_BODIES"] == "true") unless (ENV["RACK_ENV"] == "test" || ENV["RAILS_ENV"] == "test")
 
         # faraday.ssl[:verify] = false
         # faraday.request :json
