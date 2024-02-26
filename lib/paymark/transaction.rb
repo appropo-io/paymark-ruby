@@ -134,6 +134,8 @@ module Paymark
     attr_accessor :error_message
     # AcquirerResponseCode
     attr_accessor :acquirer_response_code
+
+    attr_accessor :surcharge
   end
 
 end
