@@ -77,7 +77,7 @@ module Paymark
       elsif response.body.is_a? Hash
         raise Paymark::Error, Exception.new(response.body.dig('error','errormessage'))
       else
-        raise Paymark::Error response.body || "HTTP #{response.status}"
+        raise Paymark::Error, response.body || "HTTP #{response.status}"
       end
     end
 
@@ -109,7 +109,7 @@ module Paymark
       elsif response.body.is_a? Hash
         raise Paymark::Error, response.body.dig('CreditCardTransaction','error_message')
       else
-        raise Paymark::Error response.body || "HTTP #{response.status}"
+        raise Paymark::Error, response.body || "HTTP #{response.status}"
       end
     end
 
