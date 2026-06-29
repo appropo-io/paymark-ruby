@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Paymark
   class Object
     def initialize(attributes)
@@ -9,10 +11,10 @@ module Paymark
     def self.build(array_or_hash)
       if array_or_hash.is_a? Array
         array_or_hash.map do |hash|
-          self.new(hash)
+          new(hash)
         end
       else
-        self.new(array_or_hash)
+        new(array_or_hash)
       end
     end
 
@@ -20,7 +22,7 @@ module Paymark
       snake_case key.to_s
     end
 
-    def value_map(key, value)
+    def value_map(_key, value)
       value
     end
 
@@ -30,12 +32,11 @@ module Paymark
     end
 
     def snake_case(string)
-      string.gsub(/::/, '/')
-        .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
-        .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-        .tr('-', '_')
-        .downcase
+      string.gsub(/::/, "/")
+            .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+            .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+            .tr("-", "_")
+            .downcase
     end
-
   end
 end

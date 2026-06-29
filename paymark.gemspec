@@ -1,7 +1,8 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'paymark/version'
+require "paymark/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "paymark"
@@ -9,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Daniel Brooker"]
   spec.email         = ["dan@appropo.io"]
 
-  spec.summary       = %q{Interface with paymark click payment processing}
-  spec.description   = %q{Interface with paymark click payment processing}
+  spec.summary       = "Interface with paymark click payment processing"
+  spec.description   = "Interface with paymark click payment processing"
   spec.homepage      = "http://appropo.io"
   spec.license       = "MIT"
 
@@ -30,13 +31,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "faraday"
-  spec.add_dependency "faraday_middleware"
   spec.add_dependency "addressable"
+  spec.add_dependency "faraday", ">= 2.0"
   spec.add_dependency "json"
   spec.add_dependency "multi_xml"
 
   spec.add_development_dependency "bundler", ">= 2.2.10"
+  spec.add_development_dependency "minitest", "~> 6.0"
   spec.add_development_dependency "rake", ">= 12.3.3"
-  spec.add_development_dependency "minitest", "~> 5.0"
 end
